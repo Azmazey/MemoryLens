@@ -402,7 +402,21 @@ class MemoryLensGUI(QMainWindow):
 
         action_layout = QHBoxLayout()
         action_layout.setSpacing(15)
+        
+        btn_export = QPushButton("Export Image")
+        btn_export.clicked.connect(self.export_image)
+        btn_export.setStyleSheet("""
+            QPushButton {
+                background-color: #5B8C5A;
+                color: white;
+            }
+            QPushButton:hover {
+                background-color: #4A7249;
+            }
+        """)
+        
         action_layout.addWidget(save_btn)
+        action_layout.addWidget(btn_export)
         
         main_layout = QVBoxLayout()
         main_layout.setSpacing(15) # Reduced spacing
@@ -797,6 +811,65 @@ class MemoryLensGUI(QMainWindow):
                 QMessageBox.information(self, "Success", "Image saved to album!")
             except Exception as e:
                 QMessageBox.warning(self, "Error", f"Failed to save image: {str(e)}")
+
+    def export_image(self):
+        if not self.current_image:
+            QMessageBox.warning(self, "Warning", "No image to export!")
+            return
+
+        # Simple Dialog for Format and Quality
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Export Image")
+        layout = QVBoxLayout()
+
+        # Format Selection
+        format_label = QLabel("Select Format:")
+        format_combo = QComboBox()
+        format_combo.addItems(["JPEG", "PNG", "BMP"])
+        layout.addWidget(format_label)
+        layout.addWidget(format_combo)
+
+        # Quality Selection (only for JPEG)
+        quality_group = QGroupBox("Compression (JPEG Only)")
+        quality_layout = QVBoxLayout()
+        quality_label = QLabel("Quality: 95%")
+        quality_slider = QSlider(Qt.Horizontal)
+        quality_slider.setRange(1, 100)
+        quality_slider.setValue(95)
+        quality_slider.valueChanged.connect(lambda v: quality_label.setText(f"Quality: {v}%"))
+        
+        quality_layout.addWidget(quality_label)
+        quality_layout.addWidget(quality_slider)
+        quality_group.setLayout(quality_layout)
+        layout.addWidget(quality_group)
+
+        # Toggle quality slider visibility based on format
+        format_combo.currentTextChanged.connect(lambda t: quality_group.setEnabled(t == "JPEG"))
+
+        # Buttons
+        btns = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        btns.accepted.connect(dialog.accept)
+        btns.rejected.connect(dialog.reject)
+        layout.addWidget(btns)
+
+        dialog.setLayout(layout)
+
+        if dialog.exec_() == QDialog.Accepted:
+            selected_format = format_combo.currentText()
+            selected_quality = quality_slider.value()
+            
+            ext_filter = f"{selected_format} Files (*.{selected_format.lower()})"
+            file_path, _ = QFileDialog.getSaveFileName(self, "Export Image", "", ext_filter)
+            
+            if file_path:
+                try:
+                    if selected_format == "JPEG":
+                        self.current_image.convert("RGB").save(file_path, format=selected_format, quality=selected_quality, optimize=True)
+                    else:
+                        self.current_image.save(file_path, format=selected_format)
+                    QMessageBox.information(self, "Success", f"Image exported to {file_path}")
+                except Exception as e:
+                    QMessageBox.warning(self, "Error", f"Failed to export image: {str(e)}")
 
 class MainPage(QWidget):
     def __init__(self):
