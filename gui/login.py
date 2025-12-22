@@ -17,29 +17,29 @@ class LoginPage(QWidget):
             QFrame#LoginCard {
                 background-color: #FFFFFF;
                 border-radius: 20px;
-                border: 1px solid #D4C5A9; /* Sedikit sentuhan coklat di border */
+                border: 1px solid #FAD9E6; /* Soft pink border */
             }
             QLabel#Title {
-                color: #8B5E3C; 
+                color: #F2A7C3; 
                 font-family: 'Segoe UI', sans-serif;
                 font-size: 28px;
                 font-weight: bold;
                 margin-bottom: 20px;
             }
             QLineEdit {
-                border: 2px solid #E5E7EB;
+                border: 2px solid #FCEDF2;
                 border-radius: 10px;
                 padding: 14px;
                 font-size: 15px;
-                background-color: #F9FAFB;
-                color: #374151;
+                background-color: #FFF9FA;
+                color: #4B4B4B;
             }
             QLineEdit:focus {
-                border: 2px solid #8B5E3C;
+                border: 2px solid #F2A7C3;
                 background-color: #FFFFFF;
             }
             QPushButton {
-                background-color: #8B5E3C;
+                background-color: #F2A7C3;
                 color: white;
                 border-radius: 10px;
                 padding: 14px;
@@ -47,10 +47,10 @@ class LoginPage(QWidget):
                 font-weight: bold;
             }
             QPushButton:hover {
-                background-color: #6F4B30;
+                background-color: #E68EAF;
             }
             QPushButton:pressed {
-                background-color: #543824;
+                background-color: #D67A9C;
             }
         """)
 
@@ -100,18 +100,18 @@ class LoginPage(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         
-        # Solid Background #F3ECDC
-        painter.fillRect(self.rect(), QColor("#F3ECDC"))
+        # Solid Background #FFF5F8
+        painter.fillRect(self.rect(), QColor("#FFF5F8"))
         
-        # Ornamen Dekoratif (Lingkaran Coklat Muda Transparan)
+        # Ornamen Dekoratif (Lingkaran Pink Muda Transparan)
         painter.setPen(Qt.NoPen)
         
         # Lingkaran Kiri Atas
-        painter.setBrush(QColor(139, 94, 60, 20)) # #8B5E3C transparan
+        painter.setBrush(QColor(242, 167, 195, 30)) # #F2A7C3 transparan
         painter.drawEllipse(-100, -100, 400, 400)
         
         # Lingkaran Kanan Bawah
-        painter.setBrush(QColor(139, 94, 60, 15))
+        painter.setBrush(QColor(242, 167, 195, 25))
         painter.drawEllipse(self.width() - 300, self.height() - 300, 500, 500)
         
         # Lingkaran Dekoratif Tambahan

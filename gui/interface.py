@@ -98,14 +98,14 @@ class MemoryLensGUI(QMainWindow):
         # --- GLOBAL STYLESHEET ---
         self.setStyleSheet("""
             QMainWindow {
-                background-color: #F7F3EE;
+                background-color: #FFF5F8;
             }
             QWidget {
                 font-family: 'Segoe UI', sans-serif;
                 color: #4B4B4B;
             }
             QPushButton {
-                background-color: #D6CFC4;
+                background-color: #F7C1D9; /* Secondary Pink */
                 color: #4B4B4B;
                 border: none;
                 border-radius: 8px;
@@ -114,29 +114,29 @@ class MemoryLensGUI(QMainWindow):
                 font-size: 13px;
             }
             QPushButton:hover {
-                background-color: #C2B8AD;
+                background-color: #FAD9E6;
             }
             QPushButton:pressed {
-                background-color: #B0A69B;
+                background-color: #FFC4D6;
             }
             QPushButton:checked {
-                background-color: #8B5E3C;
+                background-color: #F2A7C3; /* Primary Pink */
                 color: white;
             }
-            /* Red Reset Button Override */
+            /* Reset Button Override */
             QPushButton#ResetAllBtn {
-                background-color: #D9534F; 
+                background-color: #FFB7B2; 
                 color: white;
             }
             QPushButton#ResetAllBtn:hover {
-                background-color: #C9302C;
+                background-color: #FF9AA2;
             }
             
             /* Image Panel Style */
             QLabel {
                 background-color: #FFFFFF;
                 border-radius: 15px;
-                border: 1px solid #E5E7EB;
+                border: 1px solid #FAD9E6;
             }
         """)
 
@@ -180,7 +180,7 @@ class MemoryLensGUI(QMainWindow):
         self.upload_btn.clicked.connect(self.upload_photo)
         self.upload_btn.setStyleSheet("""
             QPushButton {
-                background-color: #8B5E3C;
+                background-color: #F2A7C3;
                 color: white;
                 border: none;
                 border-radius: 12px;
@@ -189,7 +189,7 @@ class MemoryLensGUI(QMainWindow):
                 font-size: 16px;
             }
             QPushButton:hover {
-                background-color: #6D4A2E;
+                background-color: #E68EAF;
             }
         """)
         self.upload_btn.setCursor(Qt.PointingHandCursor)
@@ -201,7 +201,7 @@ class MemoryLensGUI(QMainWindow):
         self.filter_left_btn.clicked.connect(self.prev_filter)
         self.filter_left_btn.setStyleSheet("""
             QPushButton {
-                background-color: rgba(139, 94, 60, 180);
+                background-color: rgba(242, 167, 195, 180);
                 color: white;
                 border: none;
                 border-radius: 25px;
@@ -210,7 +210,7 @@ class MemoryLensGUI(QMainWindow):
                 padding: 10px;
             }
             QPushButton:hover {
-                background-color: rgba(109, 74, 46, 220);
+                background-color: rgba(230, 142, 175, 220);
             }
         """)
         self.filter_left_btn.setFixedSize(50, 50)
@@ -222,7 +222,7 @@ class MemoryLensGUI(QMainWindow):
         self.filter_right_btn.clicked.connect(self.next_filter)
         self.filter_right_btn.setStyleSheet("""
             QPushButton {
-                background-color: rgba(139, 94, 60, 180);
+                background-color: rgba(242, 167, 195, 180);
                 color: white;
                 border: none;
                 border-radius: 25px;
@@ -231,7 +231,7 @@ class MemoryLensGUI(QMainWindow):
                 padding: 10px;
             }
             QPushButton:hover {
-                background-color: rgba(109, 74, 46, 220);
+                background-color: rgba(230, 142, 175, 220);
             }
         """)
         self.filter_right_btn.setFixedSize(50, 50)
@@ -243,7 +243,7 @@ class MemoryLensGUI(QMainWindow):
         self.filter_name_label.setAlignment(Qt.AlignCenter)
         self.filter_name_label.setStyleSheet("""
             QLabel {
-                background-color: rgba(139, 94, 60, 180);
+                background-color: rgba(242, 167, 195, 180);
                 color: white;
                 border: none;
                 border-radius: 15px;
@@ -254,6 +254,55 @@ class MemoryLensGUI(QMainWindow):
         """)
         self.filter_name_label.adjustSize()
         self.filter_name_label.hide()  # Hidden until image loaded
+
+        # --- Undo/Redo Icon Buttons (Bottom Left) ---
+        self.undo_icon_btn = QPushButton("↶", self.image_label)
+        self.undo_icon_btn.clicked.connect(self.undo)
+        self.undo_icon_btn.setStyleSheet("""
+            QPushButton {
+                background-color: rgba(242, 167, 195, 180);
+                color: white;
+                border: none;
+                border-radius: 20px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: rgba(230, 142, 175, 220);
+            }
+            QPushButton:disabled {
+                background-color: rgba(250, 217, 230, 100);
+                color: rgba(255, 255, 255, 100);
+            }
+        """)
+        self.undo_icon_btn.setFixedSize(40, 40)
+        self.undo_icon_btn.setCursor(Qt.PointingHandCursor)
+        self.undo_icon_btn.setShortcut(QKeySequence.Undo)
+        self.undo_icon_btn.hide()
+
+        self.redo_icon_btn = QPushButton("↷", self.image_label)
+        self.redo_icon_btn.clicked.connect(self.redo)
+        self.redo_icon_btn.setStyleSheet("""
+            QPushButton {
+                background-color: rgba(242, 167, 195, 180);
+                color: white;
+                border: none;
+                border-radius: 20px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: rgba(230, 142, 175, 220);
+            }
+            QPushButton:disabled {
+                background-color: rgba(250, 217, 230, 100);
+                color: rgba(255, 255, 255, 100);
+            }
+        """)
+        self.redo_icon_btn.setFixedSize(40, 40)
+        self.redo_icon_btn.setCursor(Qt.PointingHandCursor)
+        self.redo_icon_btn.setShortcut(QKeySequence.Redo)
+        self.redo_icon_btn.hide()
 
 
         # --- Sliders ---
@@ -274,31 +323,30 @@ class MemoryLensGUI(QMainWindow):
             # CHANGED: Apply stylesheet for Round Handles (Brown Theme)
             sld.setStyleSheet("""
                 QSlider::groove:horizontal {
-                    border: 1px solid #D6CFC4;
+                    border: 1px solid #FAD9E6;
                     background: #FFFFFF;
                     height: 8px;
                     border-radius: 4px;
                 }
                 QSlider::sub-page:horizontal {
-                    background: #8B5E3C; /* Brown Accent */
-                    border: 1px solid #8B5E3C;
+                    background: #F2A7C3; /* Primary Pink */
+                    border: 1px solid #F2A7C3;
                     height: 8px;
                     border-radius: 4px;
                 }
                 QSlider::add-page:horizontal {
-                    background: #E5E7EB;
-                    border: 1px solid #D6CFC4;
+                    background: #FCEDF2;
+                    border: 1px solid #FAD9E6;
                     height: 8px;
                     border-radius: 4px;
                 }
                 QSlider::handle:horizontal {
-                    background: #8B5E3C; /* Brown Handle */
+                    background: #F2A7C3; /* Pink Handle */
                     border: 2px solid #FFFFFF;
                     width: 18px;
                     height: 18px;
                     margin: -6px 0;
                     border-radius: 9px;
-                    /* box-shadow removed */
                 }
             """)
             
@@ -382,23 +430,13 @@ class MemoryLensGUI(QMainWindow):
         reset_layout = QHBoxLayout()
         reset_layout.setSpacing(15) # More spacing
         
-        self.btn_undo = QPushButton("Undo (Step Back)")
-        self.btn_undo.setShortcut(QKeySequence.Undo)
-        self.btn_undo.clicked.connect(self.undo)
-        self.btn_undo.setEnabled(False)
-        
-        self.btn_redo = QPushButton("Redo")
-        self.btn_redo.setShortcut(QKeySequence.Redo)
-        self.btn_redo.clicked.connect(self.redo)
-        self.btn_redo.setEnabled(False)
-        
         btn_reset_all = QPushButton("Reset All Settings")
         btn_reset_all.setObjectName("ResetAllBtn") # For specific styling
         btn_reset_all.clicked.connect(self.reset_all)
 
-        reset_layout.addWidget(self.btn_undo)
-        reset_layout.addWidget(self.btn_redo)
+        reset_layout.addStretch()
         reset_layout.addWidget(btn_reset_all)
+        reset_layout.addStretch()
 
         action_layout = QHBoxLayout()
         action_layout.setSpacing(15)
@@ -407,11 +445,11 @@ class MemoryLensGUI(QMainWindow):
         btn_export.clicked.connect(self.export_image)
         btn_export.setStyleSheet("""
             QPushButton {
-                background-color: #5B8C5A;
+                background-color: #F2A7C3;
                 color: white;
             }
             QPushButton:hover {
-                background-color: #4A7249;
+                background-color: #E68EAF;
             }
         """)
         
@@ -517,8 +555,12 @@ class MemoryLensGUI(QMainWindow):
         self.restore_state(next_state)
         
     def update_undo_buttons(self):
-        self.btn_undo.setEnabled(len(self.undo_stack) > 0)
-        self.btn_redo.setEnabled(len(self.redo_stack) > 0)
+        can_undo = len(self.undo_stack) > 0
+        can_redo = len(self.redo_stack) > 0
+        
+        if hasattr(self, 'undo_icon_btn'):
+            self.undo_icon_btn.setEnabled(can_undo)
+            self.redo_icon_btn.setEnabled(can_redo)
 
 
     def toggle_crop_mode(self, checked):
@@ -631,6 +673,13 @@ class MemoryLensGUI(QMainWindow):
         label_x = (label_w - self.filter_name_label.width()) // 2
         self.filter_name_label.move(label_x, 20)
         
+        # Position Undo/Redo icons (bottom left)
+        if hasattr(self, 'undo_icon_btn'):
+            self.undo_icon_btn.move(20, label_h - 60)
+            self.redo_icon_btn.move(70, label_h - 60)
+            self.undo_icon_btn.raise_()
+            self.redo_icon_btn.raise_()
+        
         # Raise to ensure they're on top
         self.filter_left_btn.raise_()
         self.filter_right_btn.raise_()
@@ -669,6 +718,11 @@ class MemoryLensGUI(QMainWindow):
                 self.filter_right_btn.show()
                 self.filter_name_label.setText(self.filters[0][0])  # "Neutral"
                 self.filter_name_label.show()
+                
+                # Show undo/redo icon buttons
+                self.undo_icon_btn.show()
+                self.redo_icon_btn.show()
+                
                 self.position_filter_ui()
 
                 # Keep upload button visible so user can upload new photos anytime
