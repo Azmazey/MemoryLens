@@ -404,10 +404,10 @@ class MemoryLensGUI(QMainWindow):
         geo_layout = QHBoxLayout()
         
         btn_rot_left = QPushButton("Rotate Left")
-        btn_rot_left.clicked.connect(lambda: self.rotate_image(-90))
+        btn_rot_left.clicked.connect(lambda: self.rotate_image(90))
         
         btn_rot_right = QPushButton("Rotate Right")
-        btn_rot_right.clicked.connect(lambda: self.rotate_image(90))
+        btn_rot_right.clicked.connect(lambda: self.rotate_image(-90))
         
         btn_flip_h = QPushButton("Flip Horizontal")
         btn_flip_h.clicked.connect(lambda: self.flip_image('horizontal'))
